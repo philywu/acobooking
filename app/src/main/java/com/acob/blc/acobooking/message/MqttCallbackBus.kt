@@ -34,6 +34,7 @@ class MqttCallbackBus :MqttCallback {
         processor.processReceivedMessage(topic,message)
        // Log.d(TAG,topic + "==== class" + evt)
        // EventBus.getDefault().post(message)
+
     }
 
     override fun deliveryComplete(token: IMqttDeliveryToken) {

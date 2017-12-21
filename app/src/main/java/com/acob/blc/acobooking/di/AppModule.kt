@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.acob.blc.acobooking.data.AppDB
 import com.acob.blc.acobooking.data.dao.OBEventDao
+import com.acob.blc.acobooking.ui.NotificationHandler
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -50,7 +51,7 @@ class AppModule(private val context: Context) {
     fun providesMqttCallbackBus(processor : MessageProcessor) = MqttCallbackBus(processor)
 
     @Provides
-    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage, eventDao: OBEventDao) = MessageProcessor(gson,localStorage,eventDao)
+    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage,nHandler:NotificationHandler, eventDao: OBEventDao) = MessageProcessor(gson,localStorage,nHandler,eventDao)
 
 
     @Provides
@@ -67,6 +68,10 @@ class AppModule(private val context: Context) {
     fun provideLocalStorage(): LocalStorage {
         return SharedPrefStorage(context);
     }
-
+    @Provides
+    @Singleton
+    fun provideNotificationHandler(context: Context): NotificationHandler {
+        return NotificationHandler(context)
+    }
 
 }

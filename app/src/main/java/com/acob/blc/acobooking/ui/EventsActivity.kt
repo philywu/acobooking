@@ -21,6 +21,7 @@ class EventsActivity : AppCompatActivity(), EventsViewEvent {
 
     val TAG = "event list"
     @Inject lateinit var presenter: EventsPresenter
+    @Inject lateinit var nHandler: NotificationHandler
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -42,12 +43,7 @@ class EventsActivity : AppCompatActivity(), EventsViewEvent {
         }
         */
     }
-    fun getLists(): ArrayList<String> {
 
-        var lists = arrayListOf("JAVA", "KOTLIN", "PHP","SWIFT","JAVA Script","MYSQL")
-
-        return lists;
-    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -67,6 +63,7 @@ class EventsActivity : AppCompatActivity(), EventsViewEvent {
 //        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         event_list.hasFixedSize()
         event_list.adapter = EventListAdapter(this,events)
+       // nHandler.createSimpleNotification(this.applicationContext)
     }
 
 

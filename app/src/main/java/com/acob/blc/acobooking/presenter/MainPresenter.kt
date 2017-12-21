@@ -64,7 +64,7 @@ class MainPresenter @Inject constructor() {
         val portString = localStorage.readMessage(KEY_MQTT_PORT)
         if (!"".equals(serverString) && !"".equals(portString)) {
             URL = "tcp://" + localStorage.readMessage(KEY_MQTT_SERVER) + ":" + localStorage.readMessage(KEY_MQTT_PORT)
-            clientId = "acob_client_" + localStorage.readMessage(KEY_APP_USER_NAME)+"_"+ clientRandom
+            clientId = "acob_client_" + localStorage.readMessage(KEY_APP_USER_NAME) //+"_"+ clientRandom
         }
 
 

@@ -4,6 +4,7 @@ import android.util.Log
 import com.acob.blc.acobooking.KEY_APP_USER_NAME
 import com.acob.blc.acobooking.data.dao.OBEventDao
 import com.acob.blc.acobooking.data.model.OBEvent
+import com.acob.blc.acobooking.ui.NotificationHandler
 import com.google.gson.Gson
 import com.phily.andr.acobooking.data.LocalStorage
 import org.eclipse.paho.client.mqttv3.MqttMessage
@@ -17,11 +18,12 @@ import javax.inject.Inject
  * Created by wugang00 on 12/12/2017.
  */
 
-class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage, eventDao: OBEventDao) {
+class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage,nHandler: NotificationHandler, eventDao: OBEventDao) {
     val TAG = "Msg Processor"
     var gson = gson
     var localStorage = lStorage
     var eventDao = eventDao
+    var nHandler = nHandler
     fun processReceivedMessage(topic: String, message: MqttMessage) {
        // var myType = MyMessageType(MyEvent::class.java)
 
@@ -32,6 +34,8 @@ class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage, 
         msgWrap = gson.fromJson(message.toString(),myType)
        saveToDB(msgWrap.data)
         Log.d(TAG,topic + "==== class" + msgWrap.data)
+        nHandler.createEventNotification(msgWrap.data)
+
     }
     fun saveToDB(event: OBEvent) {
         eventDao.insertEvent(event)

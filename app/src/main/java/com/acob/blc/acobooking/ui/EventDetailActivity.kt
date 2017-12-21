@@ -37,7 +37,7 @@ class EventDetailActivity : AppCompatActivity(),EventDetailViewEvent {
                 )
                 presenter.doAdd(eventMap)
                 Log.d(TAG, "clicked")
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Event has been added", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
 
             }
