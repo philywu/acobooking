@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(),MainViewEvent {
     }
     override fun onStart() {
         super.onStart()
-        presenter.onConnect("From Main Start")
+        //presenter.onConnect("From Main Start")
 
     }
     override fun onDestroy() {

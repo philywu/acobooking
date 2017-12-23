@@ -3,20 +3,24 @@ package com.acob.blc.acobooking.ui
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ListAdapter
 import com.acob.blc.acobooking.R
 import com.acob.blc.acobooking.data.model.OBEvent
 import com.acob.blc.acobooking.presenter.EventsPresenter
 import com.acob.blc.acobooking.presenter.EventsViewEvent
+import com.acob.blc.acobooking.ui.EventListAdapter.OnItemClicked
 import dagger.android.AndroidInjection
 
 import kotlinx.android.synthetic.main.activity_events.*
 import kotlinx.android.synthetic.main.content_events.*
 import javax.inject.Inject
 
-class EventsActivity : AppCompatActivity(), EventsViewEvent {
+class EventsActivity : AppCompatActivity(), EventsViewEvent , OnItemClicked {
+
 
 
     val TAG = "event list"
@@ -74,5 +78,11 @@ class EventsActivity : AppCompatActivity(), EventsViewEvent {
     override fun scrollTo(position: Int) {
         event_list.smoothScrollToPosition(position)
     }
+    /*override fun onClick(v: View?) {
+        Log.d(TAG,"--> ID: " + v?.id)
 
+    }*/
+    override fun onItemClick(position: Int) {
+        Log.d(TAG,"--> ID: " + position)
+    }
 }

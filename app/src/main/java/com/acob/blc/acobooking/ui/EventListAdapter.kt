@@ -10,11 +10,15 @@ import com.acob.blc.acobooking.R
 import com.acob.blc.acobooking.data.model.OBEvent
 import com.acob.blc.acobooking.presenter.asString
 import kotlinx.android.synthetic.main.eventlist_layout.view.*
+import android.R.attr.onClick
+import android.content.ContentValues.TAG
+import android.util.Log
+
 
 /**
  * Created by wugang00 on 11/12/2017.
  */
-class EventListAdapter(var c: Context, var lists: List<OBEvent>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EventListAdapter(var c: Context, var lists: List<OBEvent>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
         var v = LayoutInflater.from(parent?.context).inflate(R.layout.eventlist_layout, parent, false)
@@ -27,15 +31,42 @@ class EventListAdapter(var c: Context, var lists: List<OBEvent>) : RecyclerView.
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         (holder as Item).bindData(lists[position])
+        (holder as Item).itemView.list_event_name.setOnClickListener (
+                {
+
+                        Log.d(TAG, "come on " +" pos : " + holder.itemView.list_event_id.text)
+                        holder.itemView.bar_event_item.visibility = if ( holder.itemView.bar_event_item.visibility == View.GONE) View.VISIBLE else View.GONE
+
+                }
+        )
+        (holder as Item).itemView.btn_event_register.setOnClickListener (
+                {
+                    Log.d(TAG, "button clicked " +" pos : " + position + holder.itemView.list_event_id.text)
+                }
+        )
+
+
     }
 
+    //declare interface
+    private val onClick: OnItemClicked? = null
+
+    //make interface like this
+    interface OnItemClicked {
+        fun onItemClick(position: Int)
+    }
     class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(event: OBEvent) {
+            itemView.list_event_id.text = event.evtId
             itemView.list_event_name.text = event.name
             itemView.list_event_desc.text = event.description
             itemView.list_event_owner.text = event.owner
             itemView.list_event_deadline.text = "Start: " + event.startTime?.asString("dd.MM HH:mm")
             itemView.list_event_start_dt.text = "Deadline: " + event.deadline?.asString("dd.MM HH:mm")
+
         }
     }
+
+
+
 }

@@ -71,6 +71,38 @@ android:paddingTop="@dimen/material_padding">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Updated 6 hours ago"/>
+    <TextView
+        android:id="@+id/list_event_id"
+        android:text=''
+        style="@style/SecondaryTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text=""/>
+    <LinearLayout
+        android:id="@+id/bar_event_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/buttonlinebg"
+        android:orientation="horizontal"
+        android:paddingRight="@dimen/material_padding"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_event_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Register" />
+
+        <Button
+            android:id="@+id/btn_event_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+
+    </LinearLayout>
+
 </LinearLayout>
 
 <LinearLayout
@@ -98,8 +130,9 @@ android:paddingTop="@dimen/material_padding">
 
 </LinearLayout>
 
-<View
-    style="@style/HorizontalDividerStyle"
-    android:layout_gravity="bottom"
-    android:layout_marginLeft="@dimen/material_list_padding_left"/>
+
+    <View
+        style="@style/HorizontalDividerStyle"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="@dimen/material_list_padding_left"/>
 </FrameLayout>
