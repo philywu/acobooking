@@ -12,14 +12,13 @@ import com.acob.blc.acobooking.R
 import com.acob.blc.acobooking.data.model.OBEvent
 import com.acob.blc.acobooking.presenter.EventsPresenter
 import com.acob.blc.acobooking.presenter.EventsViewEvent
-import com.acob.blc.acobooking.ui.EventListAdapter.OnItemClicked
 import dagger.android.AndroidInjection
 
 import kotlinx.android.synthetic.main.activity_events.*
 import kotlinx.android.synthetic.main.content_events.*
 import javax.inject.Inject
 
-class EventsActivity : AppCompatActivity(), EventsViewEvent , OnItemClicked {
+class EventsActivity : AppCompatActivity(), EventsViewEvent {
 
 
 
@@ -82,7 +81,11 @@ class EventsActivity : AppCompatActivity(), EventsViewEvent , OnItemClicked {
         Log.d(TAG,"--> ID: " + v?.id)
 
     }*/
-    override fun onItemClick(position: Int) {
-        Log.d(TAG,"--> ID: " + position)
+    override fun eventRegister(evtId:String) {
+        Log.d(TAG,"--> ID: " + evtId)
+    }
+    override fun eventDelete(evtId:String) {
+        Log.d(TAG,"--> Delete Event ID: " + evtId)
+        presenter.deleteEvent(evtId)
     }
 }

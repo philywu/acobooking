@@ -17,7 +17,6 @@ class MqttManager @Inject constructor() {
     // 回调
     public val TAG = "MQTT Manager"
 
-    @Inject lateinit var  mCallback: MqttCallbackBus
 
     // Private manager variables
     private var client: MqttClient? = null
@@ -38,12 +37,12 @@ class MqttManager @Inject constructor() {
      * @param clientId  clientId
      * @return
      */
-    fun creatConnect(brokerUrl: String, userName: String?, password: String?, clientId: String): Boolean {
+    fun creatConnect(brokerUrl: String, userName: String?, password: String?, clientId: String,mCallback:MqttCallbackBus): Boolean {
         var flag = false
         val tmpDir = System.getProperty("java.io.tmpdir")
         val dataStore = MqttDefaultFilePersistence(tmpDir)
 
-        try {
+           try {
             // Construct the connection options object that contains connection parameters
             // such as cleanSession and LWT
             conOpt = MqttConnectOptions()

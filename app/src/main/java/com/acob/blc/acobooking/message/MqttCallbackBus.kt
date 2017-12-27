@@ -10,9 +10,9 @@ import javax.inject.Inject
 /**
  * Created by wugang00 on 3/12/2017.
  */
-class MqttCallbackBus :MqttCallback {
+class MqttCallbackBus @Inject constructor(p : MessageProcessor):MqttCallback {
     val TAG = "MQTT CallBack"
-    var processor : MessageProcessor
+    var processor = p
 
 /*
     init{
@@ -21,9 +21,7 @@ class MqttCallbackBus :MqttCallback {
         gson = gsonBuilder.create()
     }
     */
-    @Inject constructor(p : MessageProcessor) {
-    processor = p
-    }
+
     override fun connectionLost(cause: Throwable) {
         Log.d(TAG,cause.message.toString())
     }
@@ -32,6 +30,7 @@ class MqttCallbackBus :MqttCallback {
         Log.d(TAG,topic  + "==== json" + message.toString())
         //var evt = gson.fromJson(message.toString(),MyEvent::class.java)
         processor.processReceivedMessage(topic,message)
+
        // Log.d(TAG,topic + "==== class" + evt)
        // EventBus.getDefault().post(message)
 

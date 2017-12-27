@@ -8,7 +8,7 @@ import io.reactivex.Flowable
  * Created by wugang00 on 13/12/2017.
  */
 @Dao
-interface OBEventDao:BaseDao{
+interface OBEventDao:BaseDao<OBEvent>{
 
     @Query("select * from tbl_obevent")
     fun getAllEvents(): Flowable<List<OBEvent>>

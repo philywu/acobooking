@@ -13,16 +13,18 @@ import kotlinx.android.synthetic.main.eventlist_layout.view.*
 import android.R.attr.onClick
 import android.content.ContentValues.TAG
 import android.util.Log
+import com.acob.blc.acobooking.presenter.EventsViewEvent
 
 
 /**
  * Created by wugang00 on 11/12/2017.
  */
-class EventListAdapter(var c: Context, var lists: List<OBEvent>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class EventListAdapter(var eventsViewEvent: EventsViewEvent, var lists: List<OBEvent>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder? {
         var v = LayoutInflater.from(parent?.context).inflate(R.layout.eventlist_layout, parent, false)
         return Item(v)
+
     }
 
     override fun getItemCount(): Int {
@@ -30,31 +32,31 @@ class EventListAdapter(var c: Context, var lists: List<OBEvent>) : RecyclerView.
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
-        (holder as Item).bindData(lists[position])
-        (holder as Item).itemView.list_event_name.setOnClickListener (
+        var item = holder as Item
+        var itemListener = View.OnClickListener {
+            Log.d(TAG, "come on " +" pos : " + item.itemView.list_event_id.text)
+            item.itemView.bar_event_item.visibility = if ( item.itemView.bar_event_item.visibility == View.GONE) View.VISIBLE else View.GONE
+
+        }
+        item.bindData(lists[position])
+        item.itemView.list_event_name.setOnClickListener (itemListener)
+        item.itemView.list_event_desc.setOnClickListener (itemListener)
+
+        item.itemView.btn_event_register.setOnClickListener (
                 {
-
-                        Log.d(TAG, "come on " +" pos : " + holder.itemView.list_event_id.text)
-                        holder.itemView.bar_event_item.visibility = if ( holder.itemView.bar_event_item.visibility == View.GONE) View.VISIBLE else View.GONE
-
+                    eventsViewEvent.eventRegister(item.itemView.list_event_id.text.toString())
                 }
         )
-        (holder as Item).itemView.btn_event_register.setOnClickListener (
+        item.itemView.btn_event_delete.setOnClickListener (
                 {
-                    Log.d(TAG, "button clicked " +" pos : " + position + holder.itemView.list_event_id.text)
+                    eventsViewEvent.eventDelete(item.itemView.list_event_id.text.toString())
                 }
         )
 
 
     }
 
-    //declare interface
-    private val onClick: OnItemClicked? = null
 
-    //make interface like this
-    interface OnItemClicked {
-        fun onItemClick(position: Int)
-    }
     class Item(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindData(event: OBEvent) {
             itemView.list_event_id.text = event.evtId

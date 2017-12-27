@@ -27,4 +27,7 @@ interface EventsViewEvent :BaseViewEvent {
     fun taskAddedAt(position: Int)
 
     fun scrollTo(position: Int)
+
+    fun eventRegister(evtId:String)
+    fun eventDelete(evtId:String)
 }

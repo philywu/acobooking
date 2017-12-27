@@ -13,6 +13,7 @@ import com.phily.andr.acobooking.data.LocalStorage
 import com.phily.andr.acobooking.data.SharedPrefStorage
 import com.phily.andr.acobooking.message.MessageProcessor
 import com.phily.andr.acobooking.message.MqttCallbackBus
+import com.phily.andr.acobooking.message.MqttManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -40,7 +41,9 @@ class AppModule(private val context: Context) {
     @Provides
     @Singleton
     fun providesAppDatabase(context: Context): AppDB =
-            Room.databaseBuilder(context, AppDB::class.java, "acobooking-db").build()
+            Room.databaseBuilder(context, AppDB::class.java, "acobooking-db")
+                    .fallbackToDestructiveMigration()
+                    .build()
 
     @Provides
     @Singleton
@@ -48,10 +51,17 @@ class AppModule(private val context: Context) {
 
 
     @Provides
-    fun providesMqttCallbackBus(processor : MessageProcessor) = MqttCallbackBus(processor)
+    @Singleton
+    fun providesOBRegisterDao(database: AppDB) = database.obRegisterDao()
+
 
     @Provides
-    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage,nHandler:NotificationHandler, eventDao: OBEventDao) = MessageProcessor(gson,localStorage,nHandler,eventDao)
+    @Singleton
+    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage,mqttManager: MqttManager,nHandler:NotificationHandler, eventDao: OBEventDao) = MessageProcessor(gson,localStorage,mqttManager,nHandler,eventDao)
+
+    @Provides
+    @Singleton
+    fun providesMqttManager() = MqttManager()
 
 
     @Provides

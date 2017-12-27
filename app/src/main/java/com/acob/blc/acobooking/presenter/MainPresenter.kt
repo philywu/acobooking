@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
  */
 class MainPresenter @Inject constructor() {
 
-    @Inject lateinit var mqttManager: MqttManager
+
     @Inject lateinit var msgProcessor : MessageProcessor
     @Inject lateinit var localStorage : LocalStorage
 
@@ -72,7 +72,7 @@ class MainPresenter @Inject constructor() {
 
     fun onDestroy() {
         compositeDisposable.dispose()
-        mqttManager.release()
+        msgProcessor.releaseConnection()
         presentation = null
     }
 /*
@@ -82,25 +82,10 @@ class MainPresenter @Inject constructor() {
         }
     }
     */
-    fun <T: Any> mqttPublish(topic:String,msgObj:T, qos:Int){
-        if (mqttManager.isConnected()) {
-           // mqttManager.publish(topic,qos.toInt(),msg.toByteArray())
 
-            //var jsonStr = gson.toJson(msgObj)
-            val jsonStr = msgProcessor.getJsonString(msgObj)
-            Log.i(TAG,"json: " + jsonStr)
-           mqttManager.publish(topic,qos,jsonStr?.toByteArray())
-
-        }
-    }
-    fun mqttSubscribe(topic:String,qos:Int){
-        if (mqttManager.isConnected()) {
-            mqttManager.subscribe(topic,qos)
-        }
-    }
     fun onConnect(value:String) {
 
-        if (!"".equals(URL) && !mqttManager.isConnected()) {
+       // if (!"".equals(URL) && !mqttManager.isConnected()) {
         //localStorage.writeMessage(KEY_APP_USER_NAME,"Luke")
         //localStorage.writeMessage(KEY_MQTT_TOPIC_EVENT,"acobooking/event1")
         //userName = localStorage.readMessage(KEY_APP_USER_NAME)
@@ -112,13 +97,13 @@ class MainPresenter @Inject constructor() {
             val add = compositeDisposable.add(Observable.fromCallable(
                     {
                         Log.d(TAG, "trying connect to " + URL + " with " + clientId)
-                        val b = mqttManager?.creatConnect(URL, userName, password, clientId)
+                        val b = msgProcessor.creatConnect(URL, userName, password, clientId)
                         Log.d(TAG, "isConnected: " + b)
 
                         //subscribe
-                        mqttSubscribe(mqttTopicEvent,mqttQos)
+                        msgProcessor.mqttSubscribe(mqttTopicEvent,mqttQos)
 
-                        "call end"
+                        "Connected to MQTT Server"
                     })
                     .delay(2, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
@@ -141,9 +126,6 @@ class MainPresenter @Inject constructor() {
                     })
             )
 
-        } else {
-            Log.d(TAG,"already connected")
-        }
     }
 
 

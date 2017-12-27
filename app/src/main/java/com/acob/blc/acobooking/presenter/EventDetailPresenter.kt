@@ -23,7 +23,6 @@ class EventDetailPresenter @Inject constructor() : BasePresenter() {
     var mqttTopicEvent =""
     var mqttQos = 0
 
-    @Inject lateinit var mqttManager: MqttManager
     @Inject lateinit var msgProcessor : MessageProcessor
     @Inject lateinit var localStorage : LocalStorage
     fun onCreate(p: EventDetailViewEvent) {
@@ -45,18 +44,8 @@ class EventDetailPresenter @Inject constructor() : BasePresenter() {
         var eventId = UUID.randomUUID().toString()
         var obEvent = OBEvent(eventId,name,desc,startDt,deadlineDt,owner,status, Date())
         Log.d(TAG,obEvent.toString())
-        mqttPublish(mqttTopicEvent,obEvent,mqttQos)
+        msgProcessor.mqttPublish(mqttTopicEvent,obEvent,mqttQos)
 
     }
-    fun <T: Any> mqttPublish(topic:String,msgObj:T, qos:Int){
-        if (mqttManager.isConnected()) {
-            // mqttManager.publish(topic,qos.toInt(),msg.toByteArray())
 
-            //var jsonStr = gson.toJson(msgObj)
-            val jsonStr = msgProcessor.getJsonString(msgObj)
-            Log.i(TAG,"json: " + jsonStr)
-            mqttManager.publish(topic,qos,jsonStr?.toByteArray())
-
-        }
-    }
 }

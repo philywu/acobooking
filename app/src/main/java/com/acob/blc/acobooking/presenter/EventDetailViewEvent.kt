@@ -21,4 +21,6 @@ interface EventDetailViewEvent :BaseViewEvent {
         get() = "DEADLINE_D"
     val keyDeadlineT : String
         get() = "DEADLINE_T"
+
+
 }

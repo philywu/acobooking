@@ -10,8 +10,10 @@ import com.acob.blc.acobooking.data.model.OBEvent
 import com.phily.andr.acobooking.data.LocalStorage
 import com.phily.andr.acobooking.message.MessageProcessor
 import com.phily.andr.acobooking.message.MqttManager
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
@@ -48,5 +50,33 @@ class EventsPresenter @Inject constructor() : BasePresenter() {
        // viewEvent?.showEvents(events)
 
     }
+    fun deleteEvent(evtId:String) {
+        compositeDisposable.add(
+                Observable.fromCallable(
+                        {
+                            var evt = eventDao.findEventByEventId(evtId)
+                            Log.d(TAG,evt.toString())
+                            eventDao.deleteEvent(evt)
+                            evt
+                        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableObserver<OBEvent>() {
 
+                            override fun onNext(evt: OBEvent) {
+                               events.remove(evt)
+                                viewEvent?.showEvents(events)
+                                Log.d(TAG, "deleted" + evt.evtId)
+                            }
+
+                            override fun onError(e: Throwable) {
+                                e.printStackTrace()
+                            }
+
+                            override fun onComplete() {
+                                Log.d(TAG, "delete done")
+
+                            }
+                        }))
+    }
 }
