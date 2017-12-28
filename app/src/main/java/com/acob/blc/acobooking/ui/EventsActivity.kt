@@ -81,8 +81,9 @@ class EventsActivity : AppCompatActivity(), EventsViewEvent {
         Log.d(TAG,"--> ID: " + v?.id)
 
     }*/
-    override fun eventRegister(evtId:String) {
+    override fun eventRegister(evtId:String,owner:String) {
         Log.d(TAG,"--> ID: " + evtId)
+        presenter.registerEvent(evtId,owner)
     }
     override fun eventDelete(evtId:String) {
         Log.d(TAG,"--> Delete Event ID: " + evtId)

@@ -4,13 +4,18 @@ import android.util.Log
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttCallbackExtended
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import javax.inject.Inject
 
 /**
  * Created by wugang00 on 3/12/2017.
  */
-class MqttCallbackBus @Inject constructor(p : MessageProcessor):MqttCallback {
+class MqttCallbackBus  constructor(p : MessageProcessor):MqttCallbackExtended {
+    override fun connectComplete(reconnect: Boolean, serverURI: String?) {
+        Log.d(TAG,"Connected Complete: " +reconnect + " to "+ serverURI)
+    }
+
     val TAG = "MQTT CallBack"
     var processor = p
 

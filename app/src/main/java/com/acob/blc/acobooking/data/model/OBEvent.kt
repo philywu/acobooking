@@ -14,6 +14,7 @@ data class OBEvent(
         @ColumnInfo(name = "event_name") var name: String,
         @ColumnInfo(name = "event_desc") var description: String,
         @ColumnInfo(name = "event_start_t") var startTime: Date,
+        @ColumnInfo(name = "event_end_t") var endTime: Date,
         @ColumnInfo(name = "book_deadline_t") var deadline: Date,
         @ColumnInfo(name = "event_owner") var owner: String,
         @ColumnInfo(name = "event_status") var status: String,

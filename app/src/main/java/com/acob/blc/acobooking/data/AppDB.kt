@@ -18,7 +18,7 @@ import com.acob.blc.acobooking.data.util.DateConverter
 @Database(entities = arrayOf(
         OBEvent::class,
         OBRegister::class
-), version = 2, exportSchema = false)
+), version = 3, exportSchema = false)
 
 @TypeConverters( DateConverter::class)
 abstract class AppDB : RoomDatabase() {

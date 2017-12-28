@@ -15,8 +15,13 @@ interface EventDetailViewEvent :BaseViewEvent {
         get() = "EVENT_DESC"
     val keyStartD : String
         get() = "START_D"
+    val keyEndD : String
+        get() = "END_D"
     val keyStartT : String
         get() = "START_T"
+    val keyEndT : String
+        get() = "END_T"
+
     val keyDeadlineD : String
         get() = "DEADLINE_D"
     val keyDeadlineT : String

@@ -7,6 +7,9 @@ import org.eclipse.paho.client.mqttv3.*
 import org.eclipse.paho.client.mqttv3.persist.MqttDefaultFilePersistence
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
+
+
 
 /**
  * Created by wugang00 on 3/12/2017.
@@ -41,7 +44,7 @@ class MqttManager @Inject constructor() {
         var flag = false
         val tmpDir = System.getProperty("java.io.tmpdir")
         val dataStore = MqttDefaultFilePersistence(tmpDir)
-
+       // val persistence = MemoryPersistence()
            try {
             // Construct the connection options object that contains connection parameters
             // such as cleanSession and LWT
@@ -49,6 +52,9 @@ class MqttManager @Inject constructor() {
             conOpt!!.mqttVersion = MqttConnectOptions.MQTT_VERSION_3_1_1
            // do not set to clean session to keep the subscriber
             conOpt!!.isCleanSession = !clean
+
+           // conOpt!!.isAutomaticReconnect = true
+
             if (password != null) {
                 conOpt!!.password = password.toCharArray()
             }
@@ -60,7 +66,7 @@ class MqttManager @Inject constructor() {
             client = MqttClient(brokerUrl, clientId, dataStore)
 
             // Set this wrapper as the callback handler
-            client!!.setCallback(mCallback)
+            client?.setCallback(mCallback)
             flag = doConnect()
         } catch (e: MqttException) {
             Log.e(TAG,e.message)
@@ -114,10 +120,11 @@ class MqttManager @Inject constructor() {
             // it has been delivered to the server meeting the specified
             // quality of service.
             try {
-                client!!.publish(topicName, message)
+                client?.publish(topicName, message)
                 flag = true
             } catch (e: MqttException) {
-
+                Log.d(TAG,e.toString())
+                e.printStackTrace()
             }
 
         }
@@ -148,6 +155,7 @@ class MqttManager @Inject constructor() {
             Log.d(TAG,"Subscribing to topic \"$topicName\" qos $qos")
             try {
                 client!!.subscribe(topicName, qos)
+
                 flag = true
             } catch (e: MqttException) {
 

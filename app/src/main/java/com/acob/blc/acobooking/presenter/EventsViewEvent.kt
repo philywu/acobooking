@@ -28,6 +28,6 @@ interface EventsViewEvent :BaseViewEvent {
 
     fun scrollTo(position: Int)
 
-    fun eventRegister(evtId:String)
+    fun eventRegister(evtId:String,owner:String)
     fun eventDelete(evtId:String)
 }

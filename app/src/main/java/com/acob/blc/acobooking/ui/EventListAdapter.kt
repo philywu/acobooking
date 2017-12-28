@@ -44,7 +44,7 @@ class EventListAdapter(var eventsViewEvent: EventsViewEvent, var lists: List<OBE
 
         item.itemView.btn_event_register.setOnClickListener (
                 {
-                    eventsViewEvent.eventRegister(item.itemView.list_event_id.text.toString())
+                    eventsViewEvent.eventRegister(item.itemView.list_event_id.text.toString(),item.itemView.list_event_owner.text.toString())
                 }
         )
         item.itemView.btn_event_delete.setOnClickListener (
@@ -63,8 +63,9 @@ class EventListAdapter(var eventsViewEvent: EventsViewEvent, var lists: List<OBE
             itemView.list_event_name.text = event.name
             itemView.list_event_desc.text = event.description
             itemView.list_event_owner.text = event.owner
-            itemView.list_event_deadline.text = "Start: " + event.startTime?.asString("dd.MM HH:mm")
-            itemView.list_event_start_dt.text = "Deadline: " + event.deadline?.asString("dd.MM HH:mm")
+            itemView.list_event_start_dt.text = "Start: " + event.startTime?.asString("dd.MM HH:mm")
+            itemView.list_event_end_dt.text = "Start: " + event.endTime?.asString("dd.MM HH:mm")
+            itemView.list_event_deadline.text = "Deadline: " + event.deadline?.asString("dd.MM HH:mm")
 
         }
     }

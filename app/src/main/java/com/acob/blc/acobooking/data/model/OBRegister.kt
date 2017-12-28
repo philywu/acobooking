@@ -12,6 +12,7 @@ import java.util.*
 data class OBRegister(
         @ColumnInfo(name = "event_id") var evtId: String,
         @ColumnInfo(name = "user_name") var userName: String,
+        @ColumnInfo(name = "status") var status: String,
         @ColumnInfo(name = "create_t") var createTime: Date
 
 ) {

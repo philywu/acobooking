@@ -25,20 +25,8 @@ class MainPresenter @Inject constructor() {
     @Inject lateinit var msgProcessor : MessageProcessor
     @Inject lateinit var localStorage : LocalStorage
 
-    public val TAG = "MQTT Presnter"
-    var URL = ""
+    public val TAG = "MainPresnter"
 
-    //private String userName = "sammy";
-    private var userName: String? = null
-
-    //private String password = "password";
-    private var password: String? = null
-
-    private var clientId = ""
-
-    var mqttTopicEvent =""
-    var mqttQos = 0
-    var clientRandom = 0
 
     val compositeDisposable = CompositeDisposable()
 
@@ -50,22 +38,7 @@ class MainPresenter @Inject constructor() {
     fun onCreate(myEventPresentation: MainViewEvent) {
         presentation = myEventPresentation
 
-        //set a random number
-        clientRandom = Random().nextInt(1000)
-        //read setting
-        mqttTopicEvent =  localStorage.readMessage(KEY_MQTT_TOPIC_EVENT)
-        val qosString = localStorage.readMessage(KEY_MQTT_QOS)
 
-        mqttQos = when (qosString) {
-            "" -> 0
-            else -> Integer.parseInt(qosString)
-        }
-        val serverString = localStorage.readMessage(KEY_MQTT_SERVER)
-        val portString = localStorage.readMessage(KEY_MQTT_PORT)
-        if (!"".equals(serverString) && !"".equals(portString)) {
-            URL = "tcp://" + localStorage.readMessage(KEY_MQTT_SERVER) + ":" + localStorage.readMessage(KEY_MQTT_PORT)
-            clientId = "acob_client_" + localStorage.readMessage(KEY_APP_USER_NAME) //+"_"+ clientRandom
-        }
 
 
     }
@@ -75,13 +48,6 @@ class MainPresenter @Inject constructor() {
         msgProcessor.releaseConnection()
         presentation = null
     }
-/*
-    fun mqttPublish(topic:String,msg:String,qos:Integer){
-        if (mqttManager.isConnected()) {
-            mqttManager.publish(topic,qos.toInt(),msg.toByteArray())
-        }
-    }
-    */
 
     fun onConnect(value:String) {
 
@@ -96,16 +62,16 @@ class MainPresenter @Inject constructor() {
 
             val add = compositeDisposable.add(Observable.fromCallable(
                     {
-                        Log.d(TAG, "trying connect to " + URL + " with " + clientId)
-                        val b = msgProcessor.creatConnect(URL, userName, password, clientId)
+
+                        val b = msgProcessor.creatConnect()
                         Log.d(TAG, "isConnected: " + b)
 
                         //subscribe
-                        msgProcessor.mqttSubscribe(mqttTopicEvent,mqttQos)
+                       msgProcessor.messageSubscribe(msgProcessor.msgTopicEvent,msgProcessor.msgQos)
 
                         "Connected to MQTT Server"
                     })
-                    .delay(2, TimeUnit.SECONDS)
+                    .delay(1, TimeUnit.SECONDS)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableObserver<String>() {

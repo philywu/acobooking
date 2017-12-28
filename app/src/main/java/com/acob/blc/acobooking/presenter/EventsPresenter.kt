@@ -2,14 +2,11 @@ package com.acob.blc.acobooking.presenter
 
 import android.util.Log
 import com.acob.blc.acobooking.KEY_APP_USER_NAME
-import com.acob.blc.acobooking.KEY_MQTT_QOS
-import com.acob.blc.acobooking.KEY_MQTT_SERVER
-import com.acob.blc.acobooking.KEY_MQTT_TOPIC_EVENT
 import com.acob.blc.acobooking.data.dao.OBEventDao
 import com.acob.blc.acobooking.data.model.OBEvent
+import com.acob.blc.acobooking.data.model.OBRegister
 import com.phily.andr.acobooking.data.LocalStorage
 import com.phily.andr.acobooking.message.MessageProcessor
-import com.phily.andr.acobooking.message.MqttManager
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -26,12 +23,16 @@ class EventsPresenter @Inject constructor() : BasePresenter() {
     var  viewEvent:EventsViewEvent ? = null
     var events = ArrayList<OBEvent>()
     val compositeDisposable = CompositeDisposable()
+    var currentUser = ""
 
     @Inject lateinit var eventDao: OBEventDao
     @Inject lateinit var localStorage : LocalStorage
+    @Inject lateinit var msgProcessor : MessageProcessor
+
     fun onCreate(p: EventsViewEvent) {
         viewEvent = p
         getEventList()
+        currentUser =  localStorage.readMessage(KEY_APP_USER_NAME)
     }
     fun getEventList(){
         compositeDisposable.add(eventDao.getAllEvents()
@@ -51,6 +52,7 @@ class EventsPresenter @Inject constructor() : BasePresenter() {
 
     }
     fun deleteEvent(evtId:String) {
+
         compositeDisposable.add(
                 Observable.fromCallable(
                         {
@@ -78,5 +80,41 @@ class EventsPresenter @Inject constructor() : BasePresenter() {
 
                             }
                         }))
+    }
+
+    fun registerEvent(evtId: String,eventOwner:String) {
+
+
+
+        compositeDisposable.add(
+                Observable.fromCallable(
+                        {
+                            val topic = msgProcessor.msgTopicRegisterPrefix + eventOwner + "/" + evtId
+                            var eventReigster = OBRegister(evtId,currentUser,"pending",Date())
+
+                            msgProcessor.messagePublish(topic, eventReigster,msgProcessor.msgQos)
+                            eventReigster
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(object : DisposableObserver<OBRegister>() {
+
+                            override fun onNext(evt: OBRegister) {
+
+                                viewEvent?.showEvents(events)
+                                Log.d(TAG, "registered" + evt.evtId)
+                            }
+
+                            override fun onError(e: Throwable) {
+                                e.printStackTrace()
+                            }
+
+                            override fun onComplete() {
+                                Log.d(TAG, "register done")
+
+                            }
+                        }))
+
+
     }
 }

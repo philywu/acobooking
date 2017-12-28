@@ -32,6 +32,8 @@ class EventDetailActivity : AppCompatActivity(),EventDetailViewEvent {
                         keyEventDesc     to et_desc.text.toString().trim(),
                         keyStartD to et_start_d.text.toString().trim(),
                         keyStartT to et_start_t.text.toString().trim(),
+                        keyEndD to et_end_d.text.toString().trim(),
+                        keyEndT to et_end_t.text.toString().trim(),
                         keyDeadlineD to et_deadline_d.text.toString().trim(),
                         keyDeadlineT to et_deadline_t.text.toString().trim()
                 )

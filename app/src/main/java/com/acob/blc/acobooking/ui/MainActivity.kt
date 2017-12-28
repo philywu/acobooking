@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity(),MainViewEvent {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }*/
+        presenter.onConnect("From Main Start")
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,7 +72,7 @@ class MainActivity : AppCompatActivity(),MainViewEvent {
     }
     override fun onStart() {
         super.onStart()
-        presenter.onConnect("From Main Start")
+
 
     }
     override fun onDestroy() {

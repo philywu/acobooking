@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.acob.blc.acobooking.data.AppDB
 import com.acob.blc.acobooking.data.dao.OBEventDao
+import com.acob.blc.acobooking.data.dao.OBRegisterDao
 import com.acob.blc.acobooking.ui.NotificationHandler
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -57,10 +58,9 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage,mqttManager: MqttManager,nHandler:NotificationHandler, eventDao: OBEventDao) = MessageProcessor(gson,localStorage,mqttManager,nHandler,eventDao)
+    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage,mqttManager: MqttManager,nHandler:NotificationHandler, eventDao: OBEventDao,registerDao: OBRegisterDao) = MessageProcessor(gson,localStorage,mqttManager,nHandler,eventDao,registerDao)
 
     @Provides
-    @Singleton
     fun providesMqttManager() = MqttManager()
 
 
