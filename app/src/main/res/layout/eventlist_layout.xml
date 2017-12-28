@@ -65,6 +65,13 @@ android:paddingTop="@dimen/material_padding">
         android:layout_height="wrap_content"
         tools:text="Updated 6 hours ago"/>
     <TextView
+        android:id="@+id/list_event_end_dt"
+        android:text=''
+        style="@style/SecondaryTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Updated 6 hours ago"/>
+    <TextView
         android:id="@+id/list_event_deadline"
         android:text=''
         style="@style/SecondaryTextStyle"

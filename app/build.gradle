@@ -35,9 +35,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$rootProject.versions.dagger"
 
 //mqtt client
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
-    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2')
-            { exclude module: 'support-v4' }
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+   // compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2')
+   //         { exclude module: 'support-v4' }
 
 //rxjava
     compile "io.reactivex.rxjava2:rxjava:2.1.0"
