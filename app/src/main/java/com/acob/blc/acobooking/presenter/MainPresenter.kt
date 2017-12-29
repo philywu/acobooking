@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by wugang00 on 5/12/2017.
  */
-class MainPresenter @Inject constructor() {
+class MainPresenter @Inject constructor() : BasePresenter()  {
 
 
     @Inject lateinit var msgProcessor : MessageProcessor

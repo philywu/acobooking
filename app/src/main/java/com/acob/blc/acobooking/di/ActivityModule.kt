@@ -10,18 +10,17 @@ import dagger.android.ActivityKey
 import dagger.android.AndroidInjector
 import dagger.multibindings.IntoMap
 
+import dagger.android.ContributesAndroidInjector
+
+
+
 /**
  * Created by wugang00 on 13/12/2017.
  */
-@Module(subcomponents = arrayOf(
-        MainActivitySubComponent::class,
-        EventsActivitySubComponent::class,
-        EventDetailActivitySubComponent::class
-
-))
+@Module
 abstract class ActivityModule {
 
-    @Binds
+   /* @Binds
     @IntoMap
     @ActivityKey(MainActivity::class)
     internal abstract fun bindsMainActivityInjectorFactory(builder: MainActivitySubComponent.Builder): AndroidInjector.Factory<out Activity>
@@ -35,4 +34,13 @@ abstract class ActivityModule {
     @IntoMap
     @ActivityKey(EventDetailActivity::class)
     internal abstract fun bindsEventDetailActivityInjectorFactory(builder: EventDetailActivitySubComponent.Builder): AndroidInjector.Factory<out Activity>
+*/
+   @ContributesAndroidInjector
+   internal abstract fun contributeMainActivity(): MainActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeEventsActivity(): EventsActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeEventDetailActivity(): EventDetailActivity
 }

@@ -3,7 +3,10 @@ package com.acob.blc.acobooking.di
 import android.app.Application
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.acob.blc.acobooking.KEY_DAO_EVENT
+import com.acob.blc.acobooking.KEY_DAO_REGISTER
 import com.acob.blc.acobooking.data.AppDB
+import com.acob.blc.acobooking.data.dao.BaseDao
 import com.acob.blc.acobooking.data.dao.OBEventDao
 import com.acob.blc.acobooking.data.dao.OBRegisterDao
 import com.acob.blc.acobooking.ui.NotificationHandler
@@ -13,25 +16,39 @@ import com.google.gson.GsonBuilder
 import com.phily.andr.acobooking.data.LocalStorage
 import com.phily.andr.acobooking.data.SharedPrefStorage
 import com.phily.andr.acobooking.message.MessageProcessor
-import com.phily.andr.acobooking.message.MqttCallbackBus
 import com.phily.andr.acobooking.message.MqttManager
 import dagger.Module
 import dagger.Provides
+import dagger.multibindings.IntoMap
+import dagger.multibindings.StringKey
 import javax.inject.Singleton
+import kotlin.reflect.KClass
+import dagger.Binds
+
+
 
 /**
  * Created by wugang00 on 13/12/2017.
  */
-@Module
+@Module(includes = arrayOf(AppModule.DaoModule::class))
 class AppModule(private val context: Context) {
 
     var mApplication: Application? = null
+
+    var eventDao: OBEventDao? = null
+    var registerDao: OBRegisterDao? = null
+
+
 
     @Provides
     fun providesAppContext() = context
 
     fun AppModule(application: Application) {
         mApplication = application
+
+/*        var db = providesAppDatabase(context)
+        eventDao = db.obEventDao()
+        registerDao = db.obRegisterDao()*/
     }
 
     @Provides
@@ -46,19 +63,24 @@ class AppModule(private val context: Context) {
                     .fallbackToDestructiveMigration()
                     .build()
 
+
     @Provides
     @Singleton
     fun providesOBEventDao(database: AppDB) = database.obEventDao()
 
+    @Provides
+    @Singleton
+    fun providesOBReigisterDao(database: AppDB) = database.obRegisterDao()
 
     @Provides
     @Singleton
-    fun providesOBRegisterDao(database: AppDB) = database.obRegisterDao()
-
-
-    @Provides
-    @Singleton
-    fun providesMessageProcessor(gson : Gson,localStorage:LocalStorage,mqttManager: MqttManager,nHandler:NotificationHandler, eventDao: OBEventDao,registerDao: OBRegisterDao) = MessageProcessor(gson,localStorage,mqttManager,nHandler,eventDao,registerDao)
+    fun providesMessageProcessor(
+            gson : Gson,
+            localStorage:LocalStorage,
+            mqttManager: MqttManager,
+            nHandler:NotificationHandler,
+            @DaoScope daoMap:Map<String, out @JvmSuppressWildcards BaseDao>
+    ) = MessageProcessor(gson,localStorage,mqttManager,nHandler,daoMap)
 
     @Provides
     fun providesMqttManager() = MqttManager()
@@ -84,4 +106,18 @@ class AppModule(private val context: Context) {
         return NotificationHandler(context)
     }
 
+    @Module
+    interface DaoModule {
+        @Binds
+        @IntoMap
+        @DaoScope
+        @StringKey(KEY_DAO_EVENT)
+        fun bindEventDao(eventDao: OBEventDao):BaseDao
+
+        @Binds
+        @IntoMap
+        @DaoScope
+        @StringKey(KEY_DAO_REGISTER)
+        fun bindRegisterDao(register: OBRegisterDao):BaseDao
+    }
 }

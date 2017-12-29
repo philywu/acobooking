@@ -8,7 +8,7 @@ import io.reactivex.Flowable
  * Created by wugang00 on 26/12/2017.
  */
 @Dao
-interface OBRegisterDao:BaseDao<OBRegister>{
+interface OBRegisterDao: OBDao<OBRegister>{
 
     @Query("select * from tbl_obregister")
     fun getAllRegister(): Flowable<List<OBRegister>>

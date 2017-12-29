@@ -3,6 +3,7 @@ package com.phily.andr.acobooking.message
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.acob.blc.acobooking.*
+import com.acob.blc.acobooking.data.dao.BaseDao
 import com.acob.blc.acobooking.data.dao.OBEventDao
 import com.acob.blc.acobooking.data.dao.OBRegisterDao
 import com.acob.blc.acobooking.data.model.OBEvent
@@ -14,15 +15,16 @@ import org.eclipse.paho.client.mqttv3.MqttMessage
 import java.lang.reflect.Type
 import java.util.*
 import javax.inject.Inject
-
+import kotlin.reflect.KClass
 
 
 /**
  * Created by wugang00 on 12/12/2017.
  */
 
-class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage, mqttManager : MqttManager, nHandler: NotificationHandler, eventDao: OBEventDao,registerDao: OBRegisterDao) {
-
+class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage,
+                                            mqttManager: MqttManager, nHandler: NotificationHandler,
+                                            daoFactory: Map<String, @JvmSuppressWildcards BaseDao>) {
 
     val msgTopicEvent = "acobooking/event" //localStorage.readMessage(KEY_MQTT_TOPIC_EVENT)
     val msgTopicRegisterPrefix = "acobooking/register/"
@@ -30,13 +32,16 @@ class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage, 
 
     var gson = gson
         var localStorage = lStorage
-        var eventDao = eventDao
-        var registerDao = registerDao
+        var eventDao = daoFactory[KEY_DAO_EVENT] as OBEventDao
+        var registerDao = daoFactory[KEY_DAO_REGISTER] as OBRegisterDao
         var nHandler = nHandler
         var mqttManager = mqttManager
 
+
+
         var mCallback = MqttCallbackBus(this)
         val client_prefix = "acob_client_"
+
 
         fun processReceivedMessage(topic: String, message: MqttMessage) {
             // var myType = MyMessageType(MyEvent::class.java)
