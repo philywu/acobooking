@@ -89,7 +89,8 @@ class EventsPresenter @Inject constructor() : BasePresenter() {
         compositeDisposable.add(
                 Observable.fromCallable(
                         {
-                            val topic = msgProcessor.msgTopicRegisterPrefix + eventOwner + "/" + evtId
+                            //val topic = msgProcessor.msgTopicRegisterPrefix + eventOwner + "/" + evtId
+                            val topic = msgProcessor.msgTopicRegisterPrefix
                             var eventReigster = OBRegister(evtId,currentUser,"pending",Date())
 
                             msgProcessor.messagePublish(topic, eventReigster,msgProcessor.msgQos)

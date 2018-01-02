@@ -4,8 +4,10 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
 import com.acob.blc.acobooking.data.dao.OBEventDao
+import com.acob.blc.acobooking.data.dao.OBEventWithRegisterDao
 import com.acob.blc.acobooking.data.dao.OBRegisterDao
 import com.acob.blc.acobooking.data.model.OBEvent
+import com.acob.blc.acobooking.data.model.OBEventWithRegister
 import com.acob.blc.acobooking.data.model.OBRegister
 import com.acob.blc.acobooking.data.util.DateConverter
 
@@ -18,12 +20,14 @@ import com.acob.blc.acobooking.data.util.DateConverter
 @Database(entities = arrayOf(
         OBEvent::class,
         OBRegister::class
-), version = 3, exportSchema = false)
+
+), version = 4, exportSchema = false)
 
 @TypeConverters( DateConverter::class)
 abstract class AppDB : RoomDatabase() {
 
     abstract fun obEventDao(): OBEventDao
     abstract fun obRegisterDao(): OBRegisterDao
+    abstract fun obEventWithRegisterDao(): OBEventWithRegisterDao
 }
 

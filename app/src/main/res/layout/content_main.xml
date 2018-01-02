@@ -37,6 +37,14 @@
             android:text="Create Event"
             tools:layout_editor_absoluteX="71dp"
             tools:layout_editor_absoluteY="16dp" />
+
+        <Button
+            android:id="@+id/btn_event_register_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Event Register"
+            tools:layout_editor_absoluteX="71dp"
+            tools:layout_editor_absoluteY="16dp" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

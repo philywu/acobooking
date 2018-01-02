@@ -27,7 +27,8 @@ class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage,
                                             daoFactory: Map<String, @JvmSuppressWildcards BaseDao>) {
 
     val msgTopicEvent = "acobooking/event" //localStorage.readMessage(KEY_MQTT_TOPIC_EVENT)
-    val msgTopicRegisterPrefix = "acobooking/register/"
+   // val msgTopicRegisterPrefix = "acobooking/register/"
+    val msgTopicRegisterPrefix = "acobooking/register"
     val msgQos= 1 // localStorage.readMessage(KEY_MQTT_QOS)
 
     var gson = gson
@@ -57,7 +58,8 @@ class MessageProcessor  @Inject constructor(gson: Gson, lStorage: LocalStorage,
                     saveEvent(msgWrap.data)
                     var event = msgWrap.data as OBEvent
 
-                    val topic=msgTopicRegisterPrefix+event.owner+"/"+event.evtId
+                    //val topic=msgTopicRegisterPrefix+event.owner+"/"+event.evtId
+                    val topic=msgTopicRegisterPrefix
                     messageSubscribe(topic,msgQos)
                     Log.d(TAG, topic + "==== class" + msgWrap.data)
                     nHandler.createEventNotification(msgWrap.data)

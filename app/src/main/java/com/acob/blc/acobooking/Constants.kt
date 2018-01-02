@@ -16,5 +16,6 @@ const val KEY_MQTT_CONNECT_FLAG = "connect_mqtt"
 
 const val KEY_DAO_EVENT = "ob_event_dao"
 const val KEY_DAO_REGISTER = "ob_register_dao"
+const val KEY_DAO_EVENT_REGISTER = "ob_event_with_register_dao"
 
 

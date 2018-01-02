@@ -4,10 +4,12 @@ import android.app.Application
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.acob.blc.acobooking.KEY_DAO_EVENT
+import com.acob.blc.acobooking.KEY_DAO_EVENT_REGISTER
 import com.acob.blc.acobooking.KEY_DAO_REGISTER
 import com.acob.blc.acobooking.data.AppDB
 import com.acob.blc.acobooking.data.dao.BaseDao
 import com.acob.blc.acobooking.data.dao.OBEventDao
+import com.acob.blc.acobooking.data.dao.OBEventWithRegisterDao
 import com.acob.blc.acobooking.data.dao.OBRegisterDao
 import com.acob.blc.acobooking.ui.NotificationHandler
 import com.google.gson.FieldNamingPolicy
@@ -74,6 +76,10 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
+    fun providesOBEventWithRegisterDao(database: AppDB) = database.obEventWithRegisterDao()
+
+    @Provides
+    @Singleton
     fun providesMessageProcessor(
             gson : Gson,
             localStorage:LocalStorage,
@@ -119,5 +125,11 @@ class AppModule(private val context: Context) {
         @DaoScope
         @StringKey(KEY_DAO_REGISTER)
         fun bindRegisterDao(register: OBRegisterDao):BaseDao
+
+        @Binds
+        @IntoMap
+        @DaoScope
+        @StringKey(KEY_DAO_EVENT_REGISTER)
+        fun bindEventWithRegisterDao(register: OBEventWithRegisterDao):BaseDao
     }
 }

@@ -2,6 +2,7 @@ package com.acob.blc.acobooking.di
 
 import android.app.Activity
 import com.acob.blc.acobooking.ui.EventDetailActivity
+import com.acob.blc.acobooking.ui.EventRegisterActivity
 import com.acob.blc.acobooking.ui.EventsActivity
 import com.acob.blc.acobooking.ui.MainActivity
 import dagger.Binds
@@ -43,4 +44,7 @@ abstract class ActivityModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributeEventDetailActivity(): EventDetailActivity
+
+    @ContributesAndroidInjector
+    internal abstract fun contributeEventRegisterActivity(): EventRegisterActivity
 }

@@ -41,7 +41,10 @@ class MainActivity : AppCompatActivity(),MainViewEvent {
             val intent = Intent(this, EventDetailActivity::class.java)
             startActivity(intent);
         })
-
+        btn_event_register_list.setOnClickListener({
+            val intent = Intent(this, EventRegisterActivity::class.java)
+            startActivity(intent);
+        })
         /*
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
